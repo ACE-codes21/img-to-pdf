@@ -8,107 +8,353 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- SortableJS for drag and drop reordering -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <!-- jsPDF for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3f37c9;
+            --secondary: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #e63946;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+        }
+        
         body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray-100);
+            font-family: 'Poppins', sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
         }
+        
         .main-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 20px;
         }
+        
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            color: #343a40;
+            margin-bottom: 40px;
+            color: var(--gray-800);
+            position: relative;
         }
+        
+        .header h1 {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+        }
+        
+        .header .lead {
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--gray-600);
+        }
+        
+        .header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+        
         .upload-container {
             background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
         }
+        
+        .upload-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
         .drop-area {
-            border: 2px dashed #6c757d;
-            border-radius: 5px;
-            padding: 25px;
+            border: 2px dashed var(--gray-400);
+            border-radius: 12px;
+            padding: 40px 25px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            background-color: #f8f9fa;
+            background-color: var(--gray-100);
         }
+        
         .drop-area:hover, .drop-area.dragover {
-            border-color: #0d6efd;
-            background-color: #e9ecef;
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
         }
+        
         .drop-area i {
-            font-size: 48px;
-            color: #6c757d;
-            margin-bottom: 15px;
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
         }
+        
+        .drop-area:hover i {
+            transform: translateY(-5px);
+        }
+        
+        .drop-area h4 {
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 24px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+            padding: 10px 24px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-success:hover {
+            background-color: #3db5d8;
+            border-color: #3db5d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+        }
+        
+        .btn-outline-secondary {
+            border-color: var(--gray-400);
+            color: var(--gray-700);
+            padding: 10px 24px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--gray-200);
+            border-color: var(--gray-500);
+            color: var(--gray-800);
+        }
+        
         .image-list {
-            margin-top: 20px;
+            margin-top: 30px;
         }
+        
         .image-item {
             display: flex;
             align-items: center;
-            padding: 10px;
+            padding: 15px;
             background-color: white;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            margin-bottom: 15px;
             cursor: move;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
+        
+        .image-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transform: translateX(5px);
+        }
+        
         .image-item img {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             object-fit: cover;
-            border-radius: 5px;
-            margin-right: 15px;
+            border-radius: 8px;
+            margin-right: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
+        
         .image-item .image-name {
             flex-grow: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-weight: 500;
+            color: var(--gray-700);
         }
+        
         .image-item .remove-btn {
-            color: #dc3545;
+            color: var(--danger);
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
         }
+        
+        .image-item .remove-btn:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+            transform: scale(1.2);
+        }
+        
         .actions {
-            margin-top: 20px;
+            margin-top: 30px;
             display: flex;
             justify-content: space-between;
         }
+        
         .drag-handle {
-            color: #6c757d;
-            margin-right: 10px;
+            color: var(--gray-500);
+            margin-right: 15px;
             cursor: grab;
+            transition: color 0.2s;
         }
+        
+        .image-item:hover .drag-handle {
+            color: var(--primary);
+        }
+        
         .progress-container {
-            margin-top: 20px;
+            margin-top: 30px;
             display: none;
         }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: var(--gray-200);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(to right, var(--primary), var(--success));
+            border-radius: 5px;
+        }
+        
         .footer {
             text-align: center;
-            margin-top: 30px;
-            color: #6c757d;
+            margin-top: 40px;
+            color: var(--gray-600);
             font-size: 14px;
+            padding: 20px 0;
+            border-top: 1px solid var(--gray-200);
         }
+        
+        .order-info {
+            background-color: rgba(67, 97, 238, 0.08);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-size: 15px;
+            color: var(--gray-700);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .order-info i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        .order-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: 600;
+            margin-right: 12px;
+            box-shadow: 0 3px 8px rgba(67, 97, 238, 0.3);
+        }
+        
+        .alert-info {
+            background-color: rgba(76, 201, 240, 0.1);
+            border-color: rgba(76, 201, 240, 0.3);
+            color: var(--gray-700);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        
+        .alert-info i {
+            color: var(--success);
+            margin-right: 8px;
+        }
+        
+        .sortable-ghost {
+            opacity: 0.5;
+            background-color: var(--gray-200) !important;
+        }
+        
+        .sortable-chosen {
+            box-shadow: 0 0 15px rgba(67, 97, 238, 0.3) !important;
+        }
+        
+        @media (max-width: 768px) {
+            .upload-container {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+        
         @media (max-width: 576px) {
             .actions {
                 flex-direction: column;
             }
+            
             .actions button {
-                margin-bottom: 10px;
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            
+            .drop-area {
+                padding: 25px 15px;
+            }
+            
+            .drop-area i {
+                font-size: 48px;
+            }
+            
+            .image-item img {
+                width: 50px;
+                height: 50px;
             }
         }
     </style>
@@ -117,7 +363,7 @@
     <div class="main-container">
         <div class="header">
             <h1>Image to PDF Converter</h1>
-            <p class="lead">Convert your images to PDF in the order you choose</p>
+            <p class="lead">Transform your images into a professional PDF document</p>
         </div>
 
         <div class="upload-container">
@@ -125,31 +371,42 @@
                 <i class="fas fa-cloud-upload-alt"></i>
                 <h4>Drag & Drop Images Here</h4>
                 <p>or</p>
-                <button class="btn btn-primary" id="fileSelect">Select Images</button>
+                <button class="btn btn-primary" id="fileSelect">
+                    <i class="fas fa-images me-2"></i>Select Images
+                </button>
                 <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+            </div>
+
+            <div class="order-info">
+                <i class="fas fa-info-circle"></i> Images will be added to the PDF in the order shown below. Drag and drop to rearrange.
             </div>
 
             <div class="progress-container">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
                 </div>
-                <p class="text-center mt-2" id="progressText">Processing images...</p>
+                <p class="text-center mt-3" id="progressText">Processing images...</p>
             </div>
 
             <div class="image-list" id="imageList"></div>
 
             <div class="actions">
-                <button class="btn btn-outline-secondary" id="clearBtn">Clear All</button>
-                <button class="btn btn-success" id="convertBtn" disabled>Convert to PDF</button>
+                <button class="btn btn-outline-secondary" id="clearBtn">
+                    <i class="fas fa-trash-alt me-2"></i>Clear All
+                </button>
+                <button class="btn btn-success" id="convertBtn" disabled>
+                    <i class="fas fa-file-pdf me-2"></i>Convert to PDF
+                </button>
             </div>
         </div>
 
         <div class="alert alert-info" role="alert">
-            <i class="fas fa-info-circle"></i> Tip: Drag and drop to reorder images before converting to PDF.
+            <i class="fas fa-info-circle"></i> Tip: The PDF will maintain the exact order of images as shown in the list above.
         </div>
 
         <div class="footer">
             <p>This tool processes your images locally - no data is uploaded to any server.</p>
+            <p><i class="fas fa-lock me-1"></i> Your privacy is protected</p>
         </div>
     </div>
 
@@ -169,25 +426,38 @@
 
             // Array to store the selected images
             let selectedImages = [];
+            let sortable;
 
             // Initialize SortableJS for drag and drop reordering
-            new Sortable(imageList, {
-                animation: 150,
-                handle: '.drag-handle',
-                onEnd: function() {
-                    // Update the order of images in the array
-                    const imageItems = Array.from(imageList.querySelectorAll('.image-item'));
-                    const newSelectedImages = [];
-                    
-                    imageItems.forEach(item => {
-                        const index = parseInt(item.dataset.index);
-                        newSelectedImages.push(selectedImages[index]);
-                    });
-                    
-                    selectedImages = newSelectedImages;
-                    renderImageList();
+            function initSortable() {
+                if (sortable) {
+                    sortable.destroy();
                 }
-            });
+                
+                sortable = new Sortable(imageList, {
+                    animation: 150,
+                    handle: '.drag-handle',
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    onEnd: function(evt) {
+                        // Get the new order of images
+                        const items = Array.from(imageList.querySelectorAll('.image-item'));
+                        const newOrder = items.map(item => parseInt(item.dataset.index));
+                        
+                        // Reorder the selectedImages array
+                        const reorderedImages = [];
+                        newOrder.forEach(oldIndex => {
+                            reorderedImages.push(selectedImages[oldIndex]);
+                        });
+                        
+                        selectedImages = reorderedImages;
+                        
+                        // Re-render the list to update indices
+                        renderImageList();
+                    }
+                });
+            }
 
             // Event Listeners
             fileSelect.addEventListener('click', () => fileInput.click());
@@ -240,23 +510,36 @@
             function handleFiles(files) {
                 if (files.length === 0) return;
                 
-                Array.from(files).forEach(file => {
-                    if (file.type.match('image.*')) {
-                        const reader = new FileReader();
+                // Convert FileList to Array for easier handling
+                const filesArray = Array.from(files);
+                
+                // Filter only image files
+                const imageFiles = filesArray.filter(file => file.type.match('image.*'));
+                
+                // Process each image file
+                let loadedCount = 0;
+                
+                imageFiles.forEach(file => {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        selectedImages.push({
+                            name: file.name,
+                            data: e.target.result,
+                            file: file,
+                            originalIndex: selectedImages.length // Store original position
+                        });
                         
-                        reader.onload = function(e) {
-                            selectedImages.push({
-                                name: file.name,
-                                data: e.target.result,
-                                file: file
-                            });
-                            
+                        loadedCount++;
+                        
+                        // Only render once all images are loaded
+                        if (loadedCount === imageFiles.length) {
                             renderImageList();
                             updateConvertButton();
-                        };
-                        
-                        reader.readAsDataURL(file);
-                    }
+                        }
+                    };
+                    
+                    reader.readAsDataURL(file);
                 });
                 
                 // Reset the file input
@@ -274,22 +557,27 @@
                     
                     imageItem.innerHTML = `
                         <div class="drag-handle"><i class="fas fa-grip-lines"></i></div>
+                        <span class="order-number">${index + 1}</span>
                         <img src="${image.data}" alt="${image.name}">
                         <div class="image-name">${image.name}</div>
                         <div class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></div>
                     `;
                     
                     imageList.appendChild(imageItem);
-                    
-                    // Add event listener to remove button
-                    const removeBtn = imageItem.querySelector('.remove-btn');
-                    removeBtn.addEventListener('click', function() {
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
                         const index = parseInt(this.dataset.index);
                         selectedImages.splice(index, 1);
                         renderImageList();
                         updateConvertButton();
                     });
                 });
+                
+                // Reinitialize sortable
+                initSortable();
             }
 
             // Clear all selected images
@@ -392,6 +680,9 @@
                     }
                 }, 500);
             }
+            
+            // Initialize sortable
+            initSortable();
         });
     </script>
 
